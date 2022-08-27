@@ -6,10 +6,14 @@ import Feather from 'react-native-vector-icons/Feather';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import CardView from '../components/CardView';
+import { useDispatch, useSelector } from 'react-redux'
+import { addFavourites } from '../actions/Favourite.Action';
 
 const BadCharactersList = ({ navigation, route }) => {
     // const { userArray } = route.params
+    const dispatch = useDispatch()
     const [characterList, setCharacterList] = useState([])
+    const [selectedCategory, setSelectedCategory] = useState([])
 
     useEffect(() => {
         getCharaters()
@@ -59,7 +63,9 @@ const BadCharactersList = ({ navigation, route }) => {
         )
     }
 
-
+    useEffect(() => {
+        dispatch(addFavourites(selectedCategory))
+    }, [selectedCategory])
 
     return (
         <SafeAreaView style={styles.container}>
@@ -73,7 +79,11 @@ const BadCharactersList = ({ navigation, route }) => {
                     contentContainerStyle={{ paddingBottom: '5%' }}
                     data={characterList}
                     // renderItem={renderItems}
-                    renderItem={(item, index) => <CardView data={item} />}
+                    renderItem={(item, index) => <CardView
+                        data={item}
+                        selectedFilter={selectedCategory}
+                        setSelectedFilter={(value) => setSelectedCategory(value)} />
+                    }
                     keyExtractor={(item, index) => index.toString()}
                 />
             </View>

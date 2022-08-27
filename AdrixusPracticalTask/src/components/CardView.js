@@ -1,11 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, FlatList, Image, TextInput } from "react-native"
+import { View, Text, StyleSheet, SafeAreaView, FlatList, Image, TextInput, Touchable } from "react-native"
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-const CardView = ({ data, index }) => {
+const CardView = ({ data, index, selectedFilter, setSelectedFilter, }) => {
     var { item } = data
-    console.log('asfkdjhgakfc---', data)
+
+    function selectFilter(item) {
+        console.log('asfkdjhgakfc---', item)
+        // console.log('dropdown data-------', selectedFilter.includes(item._id))
+        if (selectedFilter.includes(item)) {
+            let removed = selectedFilter.filter((item1, index) => item.char_id != item1.char_id)
+            setSelectedFilter(removed)
+        }
+        else {
+            let select = [...selectedFilter]
+            select.push(item)
+            setSelectedFilter(select)
+        }
+        console.log('selected filter ----', selectedFilter)
+    }
+
     return (
         <View style={styles.cardContainerStyle}>
             <View style={styles.imageContainer}>
@@ -14,7 +30,13 @@ const CardView = ({ data, index }) => {
             <View style={{ paddingHorizontal: 5, paddingVertical: 10 }}>
                 <View style={styles.textContainer}>
                     <Text numberOfLines={1} style={styles.nameStyle}>{item.name}</Text>
-                    <Icon name="favorite-border" size={25} color="#333333" />
+                    <TouchableOpacity onPress={() => selectFilter(item)}>
+                        {selectedFilter.includes(item) ?
+                            <Icon name="favorite" size={30} color="#2AC878" />
+                            :
+                            <Icon name="favorite-border" size={30} color="#333333" />
+                        }
+                    </TouchableOpacity>
                 </View>
                 <Text style={styles.nicknameStyle}>{item.nickname}</Text>
             </View>

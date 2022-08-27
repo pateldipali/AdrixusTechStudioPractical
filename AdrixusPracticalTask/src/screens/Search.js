@@ -8,6 +8,7 @@ import CardView from '../components/CardView';
 const Search = ({ navigation, route }) => {
     const [searchList, setSearchList] = useState([])
     const [focus, setFocus] = useState(false)
+    const [selectedCategory, setSelectedCategory] = useState([])
 
     useEffect(() => {
         seacrh('')
@@ -70,7 +71,9 @@ const Search = ({ navigation, route }) => {
                         contentContainerStyle={{ paddingBottom: '5%' }}
                         data={searchList}
                         // renderItem={renderItems}
-                        renderItem={(item, index) => <CardView data={item} />}
+                        renderItem={(item, index) => <CardView data={item}
+                            selectedFilter={selectedCategory}
+                            setSelectedFilter={(value) => setSelectedCategory(value)} />}
                         keyExtractor={(item, index) => index.toString()}
                     />
                 }
@@ -89,7 +92,8 @@ const styles = StyleSheet.create({
         paddingTop: hp(4),
     },
     flatlistContainerStyle: {
-        marginTop: 10, marginBottom: 20, alignSelf: 'center', flexWrap: 'wrap'
+        // flex: 1 / 2,
+        marginTop: 10, marginBottom: 20,
     },
     headerContainer: {
         flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15, marginBottom: hp(1)

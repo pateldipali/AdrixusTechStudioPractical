@@ -26,13 +26,16 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import AppNavigator from './src/navigation/AppNavigator';
-
+import { Provider } from 'react-redux';
+import configureStore from './src/store/configureStore';
 
 const App = () => {
 
   return (
     <>
-      <AppNavigator />
+      <Provider store={configureStore()}>
+        <AppNavigator />
+      </Provider>
     </>
   );
 };

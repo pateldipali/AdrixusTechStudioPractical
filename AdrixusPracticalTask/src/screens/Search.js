@@ -4,6 +4,9 @@ import axios from 'axios';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen'
 import CardView from '../components/CardView';
+import { ColorConstant } from '../components/ColorConstant';
+import NavigationService from '../navigation/NavigationService';
+import FavCard from '../components/FavCard';
 
 const Search = ({ navigation, route }) => {
     const [searchList, setSearchList] = useState([])
@@ -15,10 +18,8 @@ const Search = ({ navigation, route }) => {
     }, [])
 
     async function seacrh(text) {
-        console.log('text---', text)
         try {
             const response = await axios.get(`https://www.breakingbadapi.com/api/characters?name=${text}`);
-            console.log('search list------', response);
             setSearchList(response.data)
         } catch (error) {
             console.error(error);
@@ -30,7 +31,7 @@ const Search = ({ navigation, route }) => {
             <View style={styles.headerContainer}>
                 {focus ?
                     <TouchableOpacity onPress={() => { }}>
-                        <Icon name="arrow-back" size={30} color="#fff" />
+                        <Icon name="arrow-back" size={30} color={ColorConstant.WHITE} />
                     </TouchableOpacity>
                     : null}
                 <TextInput
@@ -43,8 +44,8 @@ const Search = ({ navigation, route }) => {
                     onFocus={() => setFocus(true)}
                 />
                 <View style={styles.rowstyle}>
-                    <TouchableOpacity onPress={() => navigation.pop()}>
-                        <Icon name="close" size={30} color="#fff" />
+                    <TouchableOpacity onPress={() => NavigationService.pop()}>
+                        <Icon name="close" size={30} color={ColorConstant.WHITE} />
                     </TouchableOpacity>
 
                 </View>
@@ -56,7 +57,7 @@ const Search = ({ navigation, route }) => {
         // <SafeAreaView style={styles.container}>
         <View style={styles.container}>
             {renderHeader()}
-            <View style={{ backgroundColor: 'black', flex: 1 }}>
+            <View style={{ backgroundColor: ColorConstant.BLACK, flex: 1 }}>
                 {searchList.length == 0 ?
                     <View style={{ paddingHorizontal: hp(2), paddingVertical: hp(5) }}>
                         <Text style={styles.nodataStyle}>No character found</Text>
@@ -71,9 +72,8 @@ const Search = ({ navigation, route }) => {
                         contentContainerStyle={{ paddingBottom: '5%' }}
                         data={searchList}
                         // renderItem={renderItems}
-                        renderItem={(item, index) => <CardView data={item}
-                            selectedFilter={selectedCategory}
-                            setSelectedFilter={(value) => setSelectedCategory(value)} />}
+                        renderItem={(item, index) => <FavCard data={item}
+                        />}
                         keyExtractor={(item, index) => index.toString()}
                     />
                 }
@@ -88,7 +88,7 @@ const Search = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#242424',
+        backgroundColor: ColorConstant.GREY,
         paddingTop: hp(4),
     },
     flatlistContainerStyle: {
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15, marginBottom: hp(1)
     },
     headerText: {
-        fontSize: 27, alignSelf: 'center', marginVertical: 10, color: 'white', fontWeight: 'bold', fontFamily: 'Roboto-Bold'
+        fontSize: 27, alignSelf: 'center', marginVertical: 10, color: ColorConstant.WHITE, fontWeight: 'bold', fontFamily: 'Roboto-Bold'
     },
     rowstyle: {
         flexDirection: 'row', alignItems: 'center'
@@ -109,18 +109,18 @@ const styles = StyleSheet.create({
         height: 60,
         fontSize: 40,
         fontFamily: 'Roboto-Thin',
-        color: '#fff',
+        color: ColorConstant.WHITE,
         padding: 10,
     },
     nodataStyle: {
         fontSize: 30,
         fontFamily: 'Roboto-Light',
-        color: '#2AC878'
+        color: ColorConstant.GREEN
     },
     tryAgainStyle: {
         fontSize: 30,
         fontFamily: 'Roboto-Light',
-        color: '#fff'
+        color: ColorConstant.WHITE
     }
 })
 

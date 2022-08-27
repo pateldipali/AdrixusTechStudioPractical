@@ -1,43 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, FlatList, Image, TextInput, Touchable } from "react-native"
+import { View, Text, StyleSheet, SafeAreaView, FlatList, Image, TextInput, } from "react-native"
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Feather from 'react-native-vector-icons/Feather';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import NavigationService from '../navigation/NavigationService'
 import { ColorConstant } from './ColorConstant';
 
-const CardView = ({ data, index, selectedFilter, setSelectedFilter, }) => {
+const FavCard = ({ data, index, favourite }) => {
     var { item } = data
-
-    function selectFilter(item) {
-        if (selectedFilter.includes(item)) {
-            let removed = selectedFilter.filter((item1, index) => item.char_id != item1.char_id)
-            setSelectedFilter(removed)
-        }
-        else {
-            let select = [...selectedFilter]
-            select.push(item)
-            setSelectedFilter(select)
-        }
-    }
 
     return (
         <View style={styles.cardContainerStyle}>
             <View style={styles.imageContainer}>
-                <TouchableOpacity onPress={() => NavigationService.navigate('CharacterDetail', { charData: item })}>
-                    <Image source={{ uri: item.img }} style={styles.iamgeView} />
-                </TouchableOpacity>
+                <Image source={{ uri: item.img }} style={styles.iamgeView} />
             </View>
             <View style={{ paddingHorizontal: 5, paddingVertical: 10 }}>
                 <View style={styles.textContainer}>
                     <Text numberOfLines={1} style={styles.nameStyle}>{item.name}</Text>
-                    <TouchableOpacity onPress={() => selectFilter(item)}>
-                        {selectedFilter.includes(item) ?
-                            <Icon name="favorite" size={30} color={ColorConstant.GREEN} />
-                            :
-                            <Icon name="favorite-border" size={30} color={ColorConstant.GREY} />
-                        }
-                    </TouchableOpacity>
+                    {favourite ?
+                        <Icon name="favorite" size={25} color={ColorConstant.GREEN} />
+                        : <Icon name="favorite-border" size={30} color={ColorConstant.GREY} />
+                    }
                 </View>
                 <Text style={styles.nicknameStyle}>{item.nickname}</Text>
             </View>
@@ -64,4 +45,4 @@ const styles = StyleSheet.create({
         color: ColorConstant.WHITE, fontSize: 16, fontFamily: 'Roboto-Light'
     }
 })
-export default CardView;
+export default FavCard;
